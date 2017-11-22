@@ -15,10 +15,12 @@ import java.util.List;
 public class Group implements UserGroup {
     private String id;
     private List<User> users;
+    private long timeCreated;
 
     public Group(String id) {
         this.id = id;
         users = new ArrayList<>();
+        timeCreated = System.currentTimeMillis();
     }
     
     public void addUser(User user) {

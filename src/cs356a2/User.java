@@ -5,7 +5,9 @@
  */
 package cs356a2;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,12 +19,16 @@ class User implements UserGroup {
     private List<String> followersID;
     private List<String> followingID;
     private List<String> tweetsNewsFeed;
+    private long timeCreated;
+    private long lastUpdate;
     
     public User(String ID) {
         id = ID;
         followingID = new ArrayList<>();
         followersID = new ArrayList<>();
         tweetsNewsFeed = new ArrayList<>();
+        timeCreated = System.currentTimeMillis();
+        lastUpdate = timeCreated;
     }
 
 
@@ -59,4 +65,23 @@ class User implements UserGroup {
     List<String> getListFollowing() {
         return followingID;
     }
+
+    String getTimeCreated() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+
+        Date resultdate = new Date(timeCreated);
+        return sdf.format(resultdate);
+    }
+    
+    String getTimeLastUpdated() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+
+        Date resultdate = new Date(lastUpdate);
+        return sdf.format(resultdate);
+    }
+
+    void setTimeLastUpdated(long lastTimeUpdated) {
+        lastUpdate = lastTimeUpdated;
+    }
+    
 }

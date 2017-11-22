@@ -44,6 +44,23 @@ public class UserView extends JFrame {
         userID.setText(" Your ID: " + this.user.getID());
         this.add(userID);
         
+        //Text Area - TimeCreated
+        JTextArea timeCreatedView = new JTextArea();
+        timeCreatedView.setFont(UIManager.getFont("Label.font").deriveFont(Font.PLAIN, 15));
+        timeCreatedView.setSize(215, 17);
+        timeCreatedView.setLocation(250, 10);
+        timeCreatedView.setEditable(false);
+        timeCreatedView.setText(" Created: " + this.user.getTimeCreated());
+        this.add(timeCreatedView);
+        
+        //Text Area - Last Updated Time
+        LastUpdatedView lastUpdatedView = new LastUpdatedView(user.getID());
+        lastUpdatedView.setSize(215, 17);
+        lastUpdatedView.setLocation(250, 35);
+        lastUpdatedView.setEditable(false);
+        twitter.registerObserver(lastUpdatedView);
+        this.add(lastUpdatedView);
+        
         //Follow User ID
         JTextArea followUserID = new JTextArea();
         followUserID.setFont(UIManager.getFont("Label.font").deriveFont(Font.PLAIN, 18));

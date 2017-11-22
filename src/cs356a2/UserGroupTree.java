@@ -7,7 +7,9 @@ package cs356a2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -18,10 +20,12 @@ public class UserGroupTree implements UserGroup, Item {
     private List<UserGroup> userGroupList;
     private List<Tweet> tweets;
     private String[] positiveWords = new String[]{"good", "great", "nice", "awesome"};
+    private String lastUpdatedUser;
     
     public UserGroupTree() {
         userGroupList = new ArrayList<>();
         userGroupList.add(new Group("Root"));
+        lastUpdatedUser = "No one updated yet!";
     }
     
     @Override
@@ -125,7 +129,9 @@ public class UserGroupTree implements UserGroup, Item {
         for(UserGroup userGroup : userGroupList) {
             if(userGroup.getID().equals(userID)) {
                 User user = (User)userGroup;
-                return user.getFollowing();
+                Object[] following = user.getListFollowing().toArray();
+                String[] timeUpdated = getTimeUpdated(following);
+                return compileString(following, timeUpdated);
             }
         }
         return "";
@@ -158,6 +164,15 @@ public class UserGroupTree implements UserGroup, Item {
         if(tweets == null) {
             tweets = new ArrayList<>();
         }
+        lastUpdatedUser = tweet.getSenderID();
+        for(UserGroup curr : userGroupList) {
+            if(curr.getID().equals(tweet.getSenderID())) {
+                tweets.add(tweet);
+                User currUser = (User)curr;
+                currUser.setTimeLastUpdated(System.currentTimeMillis());
+                return;
+            }
+        }
         tweets.add(tweet);
     }
 
@@ -181,6 +196,60 @@ public class UserGroupTree implements UserGroup, Item {
             }
         }
         return (int)(((float)positive/(float)tweets.size())*100);
+    }
+
+    public int getUnverified() {
+        int unverified = 0;
+        Set<String> IDs = new HashSet<>();
+        for(UserGroup curr : userGroupList) {
+            if(IDs.contains(curr.getID())) {
+                unverified++;
+                System.out.println("This ID is used multiple times: " + curr.getID());
+                if(curr.getID().contains(" ")) {
+                    System.out.println("This ID ALSO has a space in it: " + curr.getID());
+                }
+            } else if(curr.getID().contains(" ")) {
+                unverified++;
+                System.out.println("This ID has a space in it: " + curr.getID());
+            }
+            IDs.add(curr.getID());
+        }
+        return unverified;
+    }
+
+    private String[] getTimeUpdated(Object[] following) {
+        String[] updatedTimes = new String[following.length];
+        for(int i = 0; i < following.length; i++) {
+            for(UserGroup users : userGroupList) {
+                if(users.getID().equals(following[i]) && users instanceof User) {
+                    User currUser = (User)users;
+                    updatedTimes[i] = currUser.getTimeLastUpdated();
+                }
+            }
+        }
+        return updatedTimes;
+    }
+
+    private String compileString(Object[] following, String[] timeUpdated) {
+        String followString = "";
+        for(int i = 0; i < following.length; i++) {
+            followString += following[i] + "   Last Updated: " + timeUpdated[i] + "\n";
+        }
+        return followString;
+    }
+
+    String getLastUpdatedTime(String userID) {
+        for(UserGroup curr : userGroupList) {
+            if(curr.getID().equals(userID)) {
+                User currUser = (User)curr;
+                return currUser.getTimeLastUpdated();
+            }
+        }
+        return "";
+    }
+
+    void getLastUpdated() {
+        System.out.println(lastUpdatedUser);
     }
     
 }

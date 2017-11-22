@@ -141,9 +141,34 @@ public class AdminControlPanel extends JFrame {
                 }
         });
         
+        //Button - User/Group ID verification
+        JButton verifyUserGroups = new JButton();
+        verifyUserGroups.setText("Verify User/Grp");
+        verifyUserGroups.setSize(130, 17);
+        verifyUserGroups.setLocation(370, 239);
+        this.add(verifyUserGroups);
+        verifyUserGroups.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {   
+                    JOptionPane.showMessageDialog(null , "Total Unverified Users: " + twitter.getTree().accept(new Unverified()));
+                }
+        });
+        
+        //Button - User/Group ID verification
+        JButton lastFollowed = new JButton();
+        lastFollowed.setText("Last Updated");
+        lastFollowed.setSize(130, 17);
+        lastFollowed.setLocation(560, 239);
+        this.add(lastFollowed);
+        lastFollowed.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) { 
+                    twitter.getTree().accept(new LastUpdated());
+                    JOptionPane.showMessageDialog(null , "LAST UPDATED IS IN THE CONSOLE");
+                }
+        });
+        
         //Button - show user total
         JButton showUserTotal = new JButton();
-        showUserTotal.setText("Show User Total");
+        showUserTotal.setText("User Total");
         showUserTotal.setSize(130, 17);
         showUserTotal.setLocation(370, 270);
         this.add(showUserTotal);

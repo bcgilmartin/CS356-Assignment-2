@@ -9,8 +9,12 @@ package cs356a2;
  *
  * @author Blake
  */
-interface UserGroup {
-    public String show(String tabs);
-    public String getID();
+public class LastUpdated implements Visitor {
 
+    @Override
+    public int visit(UserGroupTree userGroupTree) {
+        userGroupTree.getLastUpdated();
+        return 0;
+    }
+    
 }

@@ -9,8 +9,11 @@ package cs356a2;
  *
  * @author Blake
  */
-interface UserGroup {
-    public String show(String tabs);
-    public String getID();
+public class Unverified implements Visitor {
 
+    @Override
+    public int visit(UserGroupTree userGroupTree) {
+        return userGroupTree.getUnverified();
+    }
+    
 }
